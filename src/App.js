@@ -68,6 +68,11 @@ export default function Game() {
   const xIsNext = currentMove % 2 === 0;
   const [isAscending, setIsAscending] = useState(true);
 
+  function restartGame() {
+    setCurrentMove(0);
+    setHistory([Array(9).fill(null)]);
+  }
+
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
@@ -109,13 +114,17 @@ export default function Game() {
     <div className="game">
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <div className="game-controls">
+          <button onClick={restartGame}>Restart</button>
+          <button onClick={() => setIsAscending(!isAscending)}>
+            Sort: {isAscending ? "Asc" : "Desc"}
+          </button>
+        </div>
       </div>
       <div className="game-info">
+        <h3>Move History</h3>
         <ol>{sortedMoves}</ol>
       </div>
-      <button onClick={() => setIsAscending(!isAscending)}>
-        Sort: {isAscending ? "Ascending" : "Descending"}
-      </button>
     </div>
   );
 }
